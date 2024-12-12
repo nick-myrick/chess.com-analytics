@@ -3,6 +3,9 @@ from PyQt6.QtCore import Qt, QRect, pyqtSignal
 from PyQt6.QtGui import QPainter, QColor, QMouseEvent
 
 class QRangeSlider(QWidget):
+    '''
+    Custom PyQt6 widget that creates a range-selection slider bar.
+    '''
     rangeChanged = pyqtSignal(int, int)
     def __init__(self, window_instance, minimum=0, maximum=1000, parent=None):
         super().__init__(parent)

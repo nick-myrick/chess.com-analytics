@@ -1,5 +1,10 @@
+'''
+Common constants that are used between files
+'''
+
 # Paths
 PROCESSED_DATA_PATH = "processed-data"
+
 # Dataframe simplification
 TT = "titled-tuesday"
 USRGAMES = "2-million-user-games"

@@ -2,8 +2,28 @@ import constants
 import dask.dataframe as dd
 import pandas as pd
 import matplotlib.dates as mdates
+import matplotlib.axes
 
-def create_titled_tuesday_trend_plots(ax, ax2, dfs):
+'''
+Helper functions for add_widgets.py that creates all of the plots under Titled Tuesday
+'''
+
+def create_titled_tuesday_trend_plots(
+        ax: matplotlib.axes.Axes,
+        ax2: matplotlib.axes.Axes,
+        dfs: dict[str, dd.DataFrame]) -> None:
+    '''
+    Info:
+    Creates the titled tuesday accuracy and glicko trend plots on the given two axes
+
+    Parameters:
+    - ax (Axes): The matplotlib axes for the glicko score trend plot
+    - ax2 (Axes): The matplotlib axes for the accuracy trend plot
+    - dfs (dict[str, dd.DataFrame]): The dictionary of dask dataframes which contains our player data
+
+    Returns:
+    - None
+    '''
     
     tt_winners = dfs[constants.TT].loc[(dfs[constants.TT]["rank"] == 1) & (dfs[constants.TT]["round"] == 11)] # includes ties
     tt_winner_counts = tt_winners['username'].value_counts() # value_counts gives descending order

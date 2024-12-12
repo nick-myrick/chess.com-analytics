@@ -1,17 +1,20 @@
-# Standard
 import sys
 from pathlib import Path
 
-# Custom
+import dask.dataframe as dd
+
 import load_data
 import widgets.add_widgets as add_widgets
 
-# UI
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel
 
-dfs = None
+dfs = dict[str, dd.DataFrame]
+
+'''
+Runs the main PyQt6 Window and adds of the necessary widgets and update functions
+'''
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):

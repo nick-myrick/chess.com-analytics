@@ -5,8 +5,32 @@ import constants
 
 import dask.dataframe as dd
 import pandas as pd
+import matplotlib.axes
 
-def create_player_accuracy_trend_plot(ax, dfs, year_min, year_max, time_control='30 min'):
+'''
+Helper functions for add_widgets.py that creates all of the plots under General Player Statistics
+'''
+
+def create_player_accuracy_trend_plot(
+        ax: matplotlib.axes.Axes,
+        dfs: dict[str, dd.DataFrame],
+        year_min: int,
+        year_max: int,
+        time_control='30 min') -> None:
+    '''
+    Info:
+    Creates the player glicko accuracy trend plot on the given axes
+
+    Parameters:
+    - ax (Axes): The matplotlib axes that will be drawn to
+    - dfs (dict[str, dd.DataFrame]): The dictionary of dask dataframes which contains our player data
+    - year_min (int): The minimum year selected by our year range selection bar
+    - year_max (int): The minimum year selected by our year range selection bar
+    - time_control (str): The time control selected in our time control selection box.
+
+    Returns:
+    - None
+    '''
     filepath = f"{constants.PROCESSED_DATA_PATH}\\player-accu-{constants.TIME_CONTROLS_MAP[time_control]}"
     if not Path(filepath).is_file():
         # Get dataframe and filter by year range
@@ -51,7 +75,20 @@ def create_player_accuracy_trend_plot(ax, dfs, year_min, year_max, time_control=
     ax.set_xticklabels(result['year'].iloc[ticks], rotation=45, ha='right', fontsize=10)  # Show only the year as labels
     ax.legend()
 
-def create_player_elo_odds_plot(ax, dfs, year_min, year_max):
+def create_player_elo_odds_plot(
+        ax: matplotlib.axes.Axes,
+        dfs: dict[str, dd.DataFrame]) -> None:
+    '''
+    Info:
+    Creates the player elo odds plot on the given axes
+
+    Parameters:
+    - ax (Axes): The matplotlib axes that will be drawn to
+    - dfs (dict[str, dd.DataFrame]): The dictionary of dask dataframes which contains our player data
+
+    Returns:
+    - None
+    '''
     output_csv = f"{constants.PROCESSED_DATA_PATH}\\elo_win_percentages.csv"
 
     if not Path(output_csv).is_file():

@@ -3,6 +3,9 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 
 class PlayerRankWidget(QWidget):
+    '''
+    Custom PyQt6 Widget which creates an interactable list of players 
+    '''
     player_selected = pyqtSignal(int)
     def __init__(self, player_data):
         super().__init__()
