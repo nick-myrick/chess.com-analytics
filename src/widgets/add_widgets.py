@@ -241,7 +241,7 @@ def add_gm_widgets(
     '''
 
     # Title
-    label = QLabel("Grandmaster Statistics")
+    label = QLabel("Titled Tuesday (2024)")
     label.setStyleSheet("""
         font-size: 45px;
         font-weight: bold;
@@ -257,7 +257,7 @@ def add_gm_widgets(
 
     # (Left) Title tuesday accuracy
     tt_vbox = QVBoxLayout()
-    label = QLabel("Titled Tuesday Accuracy")
+    label = QLabel("GM Titled Tuesday Accuracy")
     label.setStyleSheet("""
         font-size: 30px;
         font-weight: bold;
@@ -279,7 +279,7 @@ def add_gm_widgets(
 
     # (Right) Glicko Trend
     gt_vbox = QVBoxLayout()
-    label = QLabel("Glicko Trend")
+    label = QLabel("GM Glicko Trend")
     label.setStyleSheet("""
         font-size: 30px;
         font-weight: bold;
@@ -385,7 +385,7 @@ def add_titled_tuesday_widgets(
     '''
 
     # Title
-    label = QLabel("Titled Tuesday (7/2022-12/2023)")
+    label = QLabel("Overall Titled Tuesday Stats")
     label.setStyleSheet("""
         font-size: 45px;
         font-weight: bold;
@@ -401,7 +401,7 @@ def add_titled_tuesday_widgets(
     # (Left) Top TT Players interactive feature: Click on name to switch gm widgets to focus on that player.
     tt_top_vbox = QVBoxLayout()
 
-    label = QLabel("Best Players")
+    label = QLabel("Player Rankings (by # of wins)")
     label.setStyleSheet("""
         font-size: 30px;
         font-weight: bold;
@@ -424,7 +424,7 @@ def add_titled_tuesday_widgets(
     # (Right) # Player accuracy to otb accuracy and glicko score charts of the top players
     tt_trends_vbox = QVBoxLayout() 
 
-    label = QLabel("Top 5 Player Glicko Trends")
+    label = QLabel("Top 5 Player Trends")
     label.setStyleSheet("""
         font-size: 30px;
         font-weight: bold;

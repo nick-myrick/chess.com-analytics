@@ -2,13 +2,19 @@ import os
 import json
 import pandas as pd
 
-def combine_json_to_csv(players_dir, output_csv):
+def combine_json_to_csv(players_dir: str, output_csv: str) -> None:
     """
     Combines multiple JSON files from the players directory into a single CSV file.
 
     Parameters:
         players_dir (str): Path to the directory containing player JSON files.
         output_csv (str): Path to the output CSV file.
+    
+    Returns:
+        None
+    
+    Outputs:
+        tt_games.csv in root folder
     """
     # List to hold all game records
     all_games = []
@@ -21,7 +27,7 @@ def combine_json_to_csv(players_dir, output_csv):
                 with open(filepath, 'r', encoding='utf-8') as file:
                     data = json.load(file)
                     
-                    # Extract username if needed
+                    # Extract username
                     username = data.get('username', 'unknown').lower()
                     
                     # Extract games
@@ -33,6 +39,7 @@ def combine_json_to_csv(players_dir, output_csv):
                     for game in games:
                         # Extract the required fields
                         game_record = {
+                            "username": username,  # Include username
                             "white": game.get("white", None),
                             "score": game.get("score", None),
                             "accuracy": game.get("accuracy", None),
@@ -63,4 +70,5 @@ if __name__ == "__main__":
     # Define the path to the players directory and output CSV
     players_directory = "players"  # Update this path if necessary
     output_csv_file = "tt_games.csv"
+
     combine_json_to_csv(players_directory, output_csv_file)

@@ -32,7 +32,7 @@ def create_titled_tuesday_trend_plots(
     df = dfs[constants.TT]
     ax.tick_params(rotation=45, labelsize=10)
 
-    full_date_range = pd.date_range(start='2022-07-01', end='2023-12-31', freq='MS')
+    full_date_range = pd.date_range(start='2024-01-01', end='2024-12-31', freq='MS')
 
     lines_ax1 = []
     lines_ax2 = []
@@ -40,27 +40,18 @@ def create_titled_tuesday_trend_plots(
     for i, (rank, gm_name, win_count) in enumerate(tt_winners[0:5]):
         df_new = df[df['username'] == gm_name]
 
-        # Extract the date part using a regular expression
-        df_new[['month', 'day', 'year']] = df_new['tournament'].str.extract(
-            r'-(january|february|march|april|may|june|july|august|september|october|november|december)-(\d+)-(\d+)-'
-        )
-        df_new['month'] = df_new['month'].str.capitalize()
-
-        # Convert to datetime using Dask
-        df_new['datetime'] = dd.to_datetime(df_new[['year', 'month', 'day']].apply(lambda x: f"{x['year']}-{x['month']}-{x['day']}", axis=1, meta=('x', 'object')))
-
         df_new = df_new[(df_new['rating'].notnull()) & (df_new['rating'] != 0)]
 
         # Group by year and month and calculate the mean rating
-        df_new['year_month'] = df_new['datetime'].dt.to_period('M')
+        df_new['year_month'] = df_new['date'].dt.to_period('M')
 
         # Calculate mean ratings per month
         mean_values = df_new.groupby('year_month')['rating'].mean().compute()
         mean_accuracy = df_new.groupby('year_month')['accuracy'].mean().compute()
 
         # Reindex to include all months in the full date range
-        mean_values = mean_values.reindex(pd.period_range(start='2022-07', end='2023-12', freq='M'))
-        mean_accuracy = mean_accuracy.reindex(pd.period_range(start='2022-07', end='2023-12', freq='M'))
+        mean_values = mean_values.reindex(pd.period_range(start='2024-01', end='2024-12', freq='M'))
+        mean_accuracy = mean_accuracy.reindex(pd.period_range(start='2024-01', end='2024-12', freq='M'))
         mean_values.interpolate(method='linear', inplace=True)
         mean_accuracy.interpolate(method='linear', inplace=True)
 

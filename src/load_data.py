@@ -20,10 +20,14 @@ def load(
     - dfs (dict[str, dd.DataFrame]): The dataframe with all of our datasets loaded to it
     '''
     dfs = {
+        #"titled-tuesday": dd.read_csv(
+        #    "hf://datasets/kirillgoltsman/titled-tuesday-chess-games/titled-tuesday.csv",
+        #    dtype={"tournament": "string", "username": "string", "accuracy": "float64", "round": "int64", "rank": "int64", "rating": "int64"}
+        #),
         "titled-tuesday": dd.read_csv(
-            "hf://datasets/kirillgoltsman/titled-tuesday-chess-games/titled-tuesday.csv",
+            "processed-data/data-collection-tt/tt_games.csv",
             dtype={"tournament": "string", "username": "string", "accuracy": "float64", "round": "int64", "rank": "int64", "rating": "int64"}
-        ),
+        )
         #"2-million-user-games": dd.read_csv(
         #    "data\\user-games.csv",
         #    sep=';',
@@ -49,18 +53,35 @@ def pre_processing(
     Returns:
     - dfs (dict[str, dd.DataFrame]): The dataframe after performing preprocessing
     '''
-    dfs[constants.TT].dropna(subset=['username', 'tournament'])
-    dfs[constants.TT].loc[(dfs[constants.TT]!=0).any(axis=1)]
+
+    # Remove entries from earlier than 2024
+    dfs[constants.TT][['month', 'day', 'year']] = dfs[constants.TT]['tournament'].str.extract(r'-(january|february|march|april|may|june|july|august|september|october|november|december)-(\d+)-(\d+)-')
+    month_conversion = {
+    "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
+    "july": 7, "august": 8, "september": 9, "october": 10, "november": 11, "december": 12
+    }
+    dfs[constants.TT]['year'] = dd.to_numeric(dfs[constants.TT]['year'], errors='coerce')
+    dfs[constants.TT] = dfs[constants.TT][dfs[constants.TT]['year'] >= 2024].reset_index(drop=True)
+
+    # Add 'date' datetime column for plotting
+    dfs[constants.TT]['date'] = dd.to_datetime(
+        dfs[constants.TT]['year'].astype(str) + "-" + dfs[constants.TT]['month'].str.lower().map(month_conversion).astype(str) + "-" + dfs[constants.TT]['day'].astype(str),
+        format='%Y-%m-%d'
+    )
+
+    # Remove unecessary columns
+    dfs[constants.TT] = dfs[constants.TT].drop(['month', 'day', 'year'], axis=1)
+
+    # Filter null values from username and tournament id, as we'll need these for every type of plot/statistic
+    dfs[constants.TT] = dfs[constants.TT].dropna(subset=['username', 'tournament'])
+    dfs[constants.TT] = dfs[constants.TT].loc[(dfs[constants.TT]!=0).any(axis=1)]
 
     #dfs[constants.USRGAMES].dropna(subset=['white', 'end_date', 'white_elo'])
     #dfs[constants.USRGAMES].loc[(dfs[constants.USRGAMES]!=0).any(axis=1)]
 
+    # Add date information
     df = dfs[constants.TT]
-    df[['month', 'day', 'year']] = df['tournament'].str.extract(r'-(january|february|march|april|may|june|july|august|september|october|november|december)-(\d+)-(\d+)-')
-    df['month'] = df['month'].str.capitalize()
-    df['datetime'] = dd.to_datetime(df[['month', 'day', 'year']].apply(lambda x: f"{x['month']} {x['day']} {x['year']}", axis=1))
-
-    tt_winners = df.loc[(df["rank"] == 1) & (df["round"] == 11)].drop_duplicates(subset=["datetime"]) # include all winners, drop games that are on the same day
+    tt_winners = df.loc[(df["rank"] == 1) & (df["round"] == 11)].drop_duplicates(subset=["date"]) # include all winners, drop games that are on the same day
     dfs[constants.TT_W] = tt_winners
 
     return dfs
