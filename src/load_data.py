@@ -49,11 +49,18 @@ def pre_processing(
     Returns:
     - dfs (dict[str, dd.DataFrame]): The dataframe after performing preprocessing
     '''
-    dfs[constants.TT].dropna(subset=['username', 'accuracy', 'rating', 'rank', 'tournament'])
+    dfs[constants.TT].dropna(subset=['username', 'tournament'])
     dfs[constants.TT].loc[(dfs[constants.TT]!=0).any(axis=1)]
 
     #dfs[constants.USRGAMES].dropna(subset=['white', 'end_date', 'white_elo'])
     #dfs[constants.USRGAMES].loc[(dfs[constants.USRGAMES]!=0).any(axis=1)]
-    #tt_winners = 
+
+    df = dfs[constants.TT]
+    df[['month', 'day', 'year']] = df['tournament'].str.extract(r'-(january|february|march|april|may|june|july|august|september|october|november|december)-(\d+)-(\d+)-')
+    df['month'] = df['month'].str.capitalize()
+    df['datetime'] = dd.to_datetime(df[['month', 'day', 'year']].apply(lambda x: f"{x['month']} {x['day']} {x['year']}", axis=1))
+
+    tt_winners = df.loc[(df["rank"] == 1) & (df["round"] == 11)].drop_duplicates(subset=["datetime"]) # include all winners, drop games that are on the same day
+    dfs[constants.TT_W] = tt_winners
 
     return dfs

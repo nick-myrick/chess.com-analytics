@@ -300,7 +300,7 @@ def add_gm_widgets(
     self.layout.addLayout(gm_graph_layout, 2, 1, 2, 2)
     
     # (Bottom) 
-    tt_winners = dfs[constants.TT].loc[(dfs[constants.TT]["rank"] == 1) & (dfs[constants.TT]["round"] == 11)] # includes ties
+    tt_winners = dfs[constants.TT_W]
     tt_winner_counts = tt_winners['username'].value_counts() # value_counts gives descending order
     tt_winner_counts_dict=  dict(sorted(zip(tt_winner_counts.compute().index, tt_winner_counts.compute().values),  key=lambda item: item[1], reverse=True))
     self.tt_winners = [name for (name, win_count) in tt_winner_counts_dict.items()]
@@ -412,14 +412,7 @@ def add_titled_tuesday_widgets(
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
     tt_top_vbox.addWidget(label)
 
-    df = dfs[constants.TT]
-    df[['month', 'day', 'year']] = df['tournament'].str.extract(r'-(january|february|march|april|may|june|july|august|september|october|november|december)-(\d+)-(\d+)-')
-    df['month'] = df['month'].str.capitalize()
-
-    # Convert to datetime
-    df['datetime'] = dd.to_datetime(df[['month', 'day', 'year']].apply(lambda x: f"{x['month']} {x['day']} {x['year']}", axis=1))
-
-    tt_winners = df.loc[(df["rank"] == 1) & (df["round"] == 11)].drop_duplicates(subset=["datetime"]) # includes ties
+    tt_winners = dfs[constants.TT_W]
     tt_winner_counts = tt_winners['username'].value_counts() # value_counts gives descending order
     tt_winner_counts_dict=  dict(sorted(zip(tt_winner_counts.compute().index, tt_winner_counts.compute().values),  key=lambda item: item[1], reverse=True))
     tt_winners = [(rank + 1, name, win_count) for rank, (name, win_count) in enumerate(tt_winner_counts_dict.items()) ]

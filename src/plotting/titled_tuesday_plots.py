@@ -25,7 +25,7 @@ def create_titled_tuesday_trend_plots(
     - None
     '''
     
-    tt_winners = dfs[constants.TT].loc[(dfs[constants.TT]["rank"] == 1) & (dfs[constants.TT]["round"] == 11)] # includes ties
+    tt_winners = dfs[constants.TT_W]
     tt_winner_counts = tt_winners['username'].value_counts() # value_counts gives descending order
     tt_winner_counts_dict=  dict(sorted(zip(tt_winner_counts.compute().index, tt_winner_counts.compute().values),  key=lambda item: item[1], reverse=True))
     tt_winners = [(rank + 1, name, win_count) for rank, (name, win_count) in enumerate(tt_winner_counts_dict.items()) ]
@@ -38,7 +38,6 @@ def create_titled_tuesday_trend_plots(
     lines_ax2 = []
 
     for i, (rank, gm_name, win_count) in enumerate(tt_winners[0:5]):
-        print(gm_name)
         df_new = df[df['username'] == gm_name]
 
         # Extract the date part using a regular expression

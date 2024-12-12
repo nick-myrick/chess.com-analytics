@@ -7,6 +7,7 @@ PROCESSED_DATA_PATH = "processed-data"
 
 # Dataframe simplification
 TT = "titled-tuesday"
+TT_W = "titled-tuesday-winners"
 USRGAMES = "2-million-user-games"
 GMLATEST = "gm-latest"
 GMACCU = "gm-accuracy"
