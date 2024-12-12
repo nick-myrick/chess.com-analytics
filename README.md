@@ -14,3 +14,8 @@ Three main analytics: General Player, Grandmaster, and Titled Tuesday
 ```pip install dask matplotlib pyqt6 huggingface_hub```
   2) Clone repository
   3) run ```python src/main.py``` from parent folder
+
+## Work-in-progress:
+  1) Generating a much larger titled tuesday database for more accurate results
+  2) Tidying up the UI interface
+  3) Adding new interactivity features to the plots
