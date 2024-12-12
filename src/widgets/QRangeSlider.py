@@ -4,7 +4,7 @@ from PyQt6.QtGui import QPainter, QColor, QMouseEvent
 
 class QRangeSlider(QWidget):
     rangeChanged = pyqtSignal(int, int)
-    def __init__(self, minimum=0, maximum=1000, parent=None):
+    def __init__(self, window_instance, minimum=0, maximum=1000, parent=None):
         super().__init__(parent)
         self.minimum = minimum
         self.maximum = maximum
@@ -16,6 +16,7 @@ class QRangeSlider(QWidget):
         self.handle_radius = 10
         self.dragging_start = False
         self.dragging_end = False
+        self.window_instance = window_instance
 
         self.setMinimumHeight(50)
 
@@ -71,11 +72,11 @@ class QRangeSlider(QWidget):
         if self.dragging_start:
             self.start = self.pos_to_value(event.pos().x())
             self.start = min(max(self.minimum, self.start), self.end - 1)
-            self.update()
+            self.update(self.window_instance)
         elif self.dragging_end:
             self.end = self.pos_to_value(event.pos().x())
             self.end = max(min(self.maximum, self.end), self.start + 1)
-            self.update()
+            self.update(self.window_instance)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         self.dragging_start = False
