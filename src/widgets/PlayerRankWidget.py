@@ -1,12 +1,12 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QSizePolicy
 from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QFont
 
 class PlayerRankWidget(QWidget):
     player_selected = pyqtSignal(int)
     def __init__(self, player_data):
         super().__init__()
         self.setWindowTitle("Player Rankings")
-        #self.resize(400, 600)
 
         # Main layout
         layout = QVBoxLayout(self)
@@ -21,6 +21,9 @@ class PlayerRankWidget(QWidget):
 
         self.table.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.table.verticalHeader().hide()
+
+        font = QFont("Arial", 15)  # Font: Arial, Size: 12
+        self.table.setFont(font) 
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
         # Center align all cell contents

@@ -16,6 +16,8 @@ from widgets.QRangeSlider import *
 from widgets.PlayerRankWidget import *
 
 def add_player_widgets(self, dfs):
+    player_vbox = QVBoxLayout()
+    #player_vbox.addStretch()
     '''
     Single column, 5 rows. Left half of the screen
     '''
@@ -27,14 +29,15 @@ def add_player_widgets(self, dfs):
     # Title
     label = QLabel("General Player Statistics")
     label.setStyleSheet("""
-        font-size: 40px;
+        font-size: 45px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 20px;
         padding-bottom: 20px;
     """)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    self.layout.addWidget(label, 1, 0)
+    player_vbox.addWidget(label)
+    #self.layout.addWidget(label, 1, 0)
 
     # Accuracy canvas
     label = QLabel("Median Player Glicko Trend")
@@ -46,12 +49,15 @@ def add_player_widgets(self, dfs):
         padding-bottom: 20px;
     """)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    self.layout.addWidget(label, 2, 0)
+    #self.layout.addWidget(label, 2, 0)
+    player_vbox.addWidget(label)
     self.player_accu_figure = Figure()
     self.player_accu_figure.subplots_adjust(bottom=0.2)
     self.player_accu_canvas = FigureCanvas(self.player_accu_figure) # fig size in inches
     player_plots.create_player_accuracy_trend_plot(self.player_accu_canvas.figure.subplots(), dfs, self.start_year, self.end_year, self.time_control)
-    self.layout.addWidget(self.player_accu_canvas, 3, 0)
+    player_vbox.addWidget(self.player_accu_canvas)
+    #self.layout.addWidget(self.player_accu_canvas, 3, 0)
+
 
     # Time Control Selection
     time_control_layout = QHBoxLayout()
@@ -100,7 +106,8 @@ def add_player_widgets(self, dfs):
     containerLayout.addLayout(time_control_layout)
     containerLayout.addLayout(year_range_layout)
     containerLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    self.layout.addLayout(containerLayout, 4, 0)
+    player_vbox.addLayout(containerLayout)
+    #self.layout.addLayout(containerLayout, 4, 0)
 
     # Winning chances canvas
     label = QLabel("Winning Odds v.s. Opponent ~100 Points Lower")
@@ -112,13 +119,17 @@ def add_player_widgets(self, dfs):
         padding-bottom: 20px;
     """)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    self.layout.addWidget(label, 5, 0)
+    #self.layout.addWidget(label, 5, 0)
+    player_vbox.addWidget(label)
     self.player_win_chance_figure = Figure()
     self.player_win_chance_figure.subplots_adjust(bottom=0.2)
     self.player_win_chance_canvas = FigureCanvas(self.player_win_chance_figure) # fig size in inches
     player_plots.create_player_elo_odds_plot(self.player_win_chance_canvas.figure.subplots(), dfs, self.start_year, self.end_year)
-    self.layout.addWidget(self.player_win_chance_canvas, 6, 0)
+    player_vbox.addWidget(self.player_win_chance_canvas)
+    #self.layout.addWidget(self.player_win_chance_canvas, 6, 0)
 
+    self.layout.addLayout(player_vbox, 1, 0, 7, 1)
+    self.layout.setAlignment(player_vbox, Qt.AlignmentFlag.AlignVCenter)
 
     # Draw both canvases
     self.player_accu_canvas.draw()
@@ -153,7 +164,7 @@ def add_gm_widgets(self, dfs):
     # Title
     label = QLabel("Grandmaster Statistics")
     label.setStyleSheet("""
-        font-size: 40px;
+        font-size: 45px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 20px;
@@ -271,7 +282,7 @@ def add_titled_tuesday_widgets(self, dfs):
     # Title
     label = QLabel("Titled Tuesday (7/2022-12/2023)")
     label.setStyleSheet("""
-        font-size: 40px;
+        font-size: 45px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 40px;
@@ -319,10 +330,21 @@ def add_titled_tuesday_widgets(self, dfs):
     tt_trends_vbox.addWidget(label)
 
     self.tt_trends_fig = Figure()
+    self.tt_trends_fig.subplots_adjust(top=0.8)
     self.tt_trends_fig.subplots_adjust(bottom=0.2)
     self.tt_trends_canvas = FigureCanvas(self.tt_trends_fig) # fig size in inches
-    titled_tuesday_plots.create_titled_tuesday_trend_plot(self.tt_trends_canvas.figure.subplots(), dfs)
+
+    self.tt_trends_accu_fig = Figure()
+    self.tt_trends_accu_fig.subplots_adjust(bottom=0.2)
+    self.tt_trends_accu_canvas = FigureCanvas(self.tt_trends_accu_fig) # fig size in inches
+
+    titled_tuesday_plots.create_titled_tuesday_trend_plots(
+        self.tt_trends_canvas.figure.subplots(),
+        self.tt_trends_accu_canvas.figure.subplots(),
+        dfs
+    )
     tt_trends_vbox.addWidget(self.tt_trends_canvas)
+    tt_trends_vbox.addWidget(self.tt_trends_accu_canvas)
 
     tt_layout.addLayout(tt_trends_vbox)
     player_list.player_selected.connect(lambda x: update_grandmaster_plots(self, x, dfs))

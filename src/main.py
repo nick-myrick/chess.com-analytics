@@ -24,6 +24,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         add_widgets.add_player_widgets(self, dfs)
         add_widgets.add_gm_widgets(self, dfs)
         add_widgets.add_titled_tuesday_widgets(self, dfs)
+
+        # Loop through the widgets in the first column and center them vertically
+        for row in range(self.layout.rowCount()):
+            widget_item = self.layout.itemAtPosition(row, 0)
+            if widget_item:
+                widget = widget_item.widget()  # Extract the widget from QLayoutItem
+                if widget:
+                    self.layout.setAlignment(widget, Qt.AlignmentFlag.AlignVCenter)  # Center the widget vertically
     
     def setup_window(self):
         '''
@@ -32,7 +40,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.width = 1920
         self.height = 1920
         self.setGeometry(100, 100, self.width, self.height)
-        #self.setFixedSize(self.width, self.height)
         self.resize(1920, 1920)
         self.main_widget = QtWidgets.QWidget()
         self.setCentralWidget(self.main_widget)
@@ -48,12 +55,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("Chess.com Statistics")
         label = QLabel("Chess.com Statistics")
         label.setStyleSheet("""
-            font-size: 45px;
+            font-size: 70px;
             font-weight: bold;
             color: #eeeed2;
             padding-top: 20px;
             padding-bottom: 20px;
-            text-decoration: underline;
         """)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(label, 0, 0, 1, 3)

@@ -109,17 +109,17 @@ def create_player_elo_odds_plot(ax, dfs, year_min, year_max):
     ax.set_xlabel('Elo range')
     ax.set_ylabel('Win chance (%)')
 
-    annot = ax.annotate("", xy=(0,0), xytext=(0,-25),
-                        textcoords="offset points",
-                        va="top", ha="center",
-                        bbox=dict(
-                            boxstyle="round", 
-                            fc='white',
-                            ec='black',
-                            alpha=1.0,
-                            pad=0.5
-                        ),
-                        arrowprops=dict(arrowstyle="->"))
+    annot = ax.annotate(
+        "", xy=(0,0), xytext=(0,-25),
+        textcoords="offset points", va="top",
+        ha="center",
+        bbox=dict(
+            boxstyle="round", fc='white',
+            ec='black', alpha=1.0,
+            pad=0.5
+        ),
+        arrowprops=dict(arrowstyle="->")
+    )
     annot.set_visible(False)
     
     def update_annot(ind):
