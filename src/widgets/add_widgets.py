@@ -27,7 +27,7 @@ def add_player_widgets(self, dfs):
     # Title
     label = QLabel("General Player Statistics")
     label.setStyleSheet("""
-        font-size: 30px;
+        font-size: 40px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 20px;
@@ -39,7 +39,7 @@ def add_player_widgets(self, dfs):
     # Accuracy canvas
     label = QLabel("Median Player Glicko Trend")
     label.setStyleSheet("""
-        font-size: 25px;
+        font-size: 30px;
         font-weight: bold;
         color: #ebecd0;
         padding-top: 20px;
@@ -48,6 +48,7 @@ def add_player_widgets(self, dfs):
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
     self.layout.addWidget(label, 2, 0)
     self.player_accu_figure = Figure()
+    self.player_accu_figure.subplots_adjust(bottom=0.2)
     self.player_accu_canvas = FigureCanvas(self.player_accu_figure) # fig size in inches
     player_plots.create_player_accuracy_trend_plot(self.player_accu_canvas.figure.subplots(), dfs, self.start_year, self.end_year, self.time_control)
     self.layout.addWidget(self.player_accu_canvas, 3, 0)
@@ -56,7 +57,7 @@ def add_player_widgets(self, dfs):
     time_control_layout = QHBoxLayout()
     label = QLabel("Time Control:")
     label.setStyleSheet("""
-        font-size: 15px;
+        font-size: 25px;
         font-weight: bold;
         color: #bdc4b4;
     """)
@@ -69,24 +70,42 @@ def add_player_widgets(self, dfs):
             padding: 10px;
             margin: 5px;
             max-width: 200px; /* Prevent stretching */
-            font-size: 15px;
+            font-size: 25px;
         }
     """)
     time_control_layout.addWidget(self.time_control_box)
     self.time_control_box.currentIndexChanged.connect(lambda idx: time_control_update(self, idx, dfs))
     self.time_control_box.setCurrentIndex(constants.TIME_CONTROLS.index(self.time_control))
 
+    year_range_layout = QVBoxLayout()
+    # Year range selection
+    self.year_range_label = QLabel(f"Year range: {self.start_year} - {self.end_year}")
+    self.year_range_label.setStyleSheet("""
+        font-size: 25px;
+        font-weight: bold;
+        color: #bdc4b4;
+    """)
+    self.year_range_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    year_range_layout.addWidget(self.year_range_label)
 
+    self.range_slider = QRangeSlider(self, self.start_year, self.end_year)
+    year_range_layout.addWidget(self.range_slider)
+    self.range_slider.rangeChanged.connect(lambda x, y: update_player_plots(self, x, y, dfs))
+    self.range_slider.update = update_year_range_label
+
+    #year_range_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
     time_control_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-    container_widget = QWidget()
-    container_widget.setLayout(time_control_layout)
-    self.layout.addWidget(container_widget, 4, 0)
+    containerLayout = QHBoxLayout()
+    containerLayout.addLayout(time_control_layout)
+    containerLayout.addLayout(year_range_layout)
+    containerLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    self.layout.addLayout(containerLayout, 4, 0)
 
     # Winning chances canvas
-    label = QLabel("Winning Odds Against Lower Brackets")
+    label = QLabel("Winning Odds v.s. Opponent ~100 Points Lower")
     label.setStyleSheet("""
-        font-size: 25px;
+        font-size: 30px;
         font-weight: bold;
         color: #ebecd0;
         padding-top: 20px;
@@ -100,22 +119,6 @@ def add_player_widgets(self, dfs):
     player_plots.create_player_elo_odds_plot(self.player_win_chance_canvas.figure.subplots(), dfs, self.start_year, self.end_year)
     self.layout.addWidget(self.player_win_chance_canvas, 6, 0)
 
-    # Year range selection
-    self.year_range_label = QLabel(f"Year range: {self.start_year} - {self.end_year}")
-    self.year_range_label.setStyleSheet("""
-        font-size: 15px;
-        font-weight: bold;
-        color: #bdc4b4;
-        padding-top: 200px;
-    """)
-    self.year_range_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    self.layout.addWidget(self.year_range_label, 7, 0)
-
-    self.range_slider = QRangeSlider(self, self.start_year, self.end_year)
-    self.layout.addWidget(self.range_slider, 8, 0)
-    self.range_slider.rangeChanged.connect(lambda x, y: update_player_plots(self, x, y, dfs))
-
-    self.range_slider.update = update_year_range_label
 
     # Draw both canvases
     self.player_accu_canvas.draw()
@@ -124,7 +127,6 @@ def add_player_widgets(self, dfs):
 def time_control_update(self, index, dfs):
     self.time_control = constants.TIME_CONTROLS[int(index)]
     self.player_accu_figure.clear()
-    ax = self.player_accu_canvas.figure.subplots()
     player_plots.create_player_accuracy_trend_plot(self.player_accu_canvas.figure.subplots(), dfs, self.start_year, self.end_year, self.time_control)
     self.player_accu_canvas.draw()
     
@@ -132,13 +134,11 @@ def update_player_plots(self, start_year, end_year, dfs):
     self.start_year = start_year
     self.end_year = end_year
     # Refresh both of the plots with the new start and end year
-    self.player_accu_figure.clear()
-    ax = self.player_accu_canvas.figure.subplots()
+    self.player_accu_figure.clf()
     player_plots.create_player_accuracy_trend_plot(self.player_accu_canvas.figure.subplots(), dfs, self.start_year, self.end_year, self.time_control)
     self.player_accu_canvas.draw()
 
-    self.player_win_chance_figure.clear()
-    ax = self.player_win_chance_canvas.figure.subplots()
+    self.player_win_chance_figure.clf()
     player_plots.create_player_elo_odds_plot(self.player_win_chance_canvas.figure.subplots(), dfs, self.start_year, self.end_year)
     self.player_win_chance_canvas.draw()
 
@@ -153,7 +153,7 @@ def add_gm_widgets(self, dfs):
     # Title
     label = QLabel("Grandmaster Statistics")
     label.setStyleSheet("""
-        font-size: 30px;
+        font-size: 40px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 20px;
@@ -170,7 +170,7 @@ def add_gm_widgets(self, dfs):
     tt_vbox = QVBoxLayout() # Vertical container
     label = QLabel("Titled Tuesday Accuracy")
     label.setStyleSheet("""
-        font-size: 25px;
+        font-size: 30px;
         font-weight: bold;
         color: #ebecd0;
         padding-top: 20px;
@@ -179,7 +179,7 @@ def add_gm_widgets(self, dfs):
 
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
     self.gm_tt_accu_fig = Figure()
-    self.gm_tt_accu_fig.subplots_adjust(bottom=0.3)
+    self.gm_tt_accu_fig.subplots_adjust(bottom=0.2)
     self.gm_tt_accu_canvas = FigureCanvas(self.gm_tt_accu_fig) # fig size in inches
     gm_plots.create_grandmaster_tt_accu_plot(self.gm_tt_accu_canvas.figure.subplots(), dfs)
 
@@ -192,7 +192,7 @@ def add_gm_widgets(self, dfs):
     gt_vbox = QVBoxLayout() # Vertical container
     label = QLabel("Glicko Trend")
     label.setStyleSheet("""
-        font-size: 25px;
+        font-size: 30px;
         font-weight: bold;
         color: #ebecd0;
         padding-top: 20px;
@@ -200,7 +200,7 @@ def add_gm_widgets(self, dfs):
     """)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter) 
     self.gm_glicko_trend_fig = Figure()
-    self.gm_glicko_trend_fig.subplots_adjust(bottom=0.3)
+    self.gm_glicko_trend_fig.subplots_adjust(bottom=0.2)
     self.gm_glicko_trend_canvas = FigureCanvas(self.gm_glicko_trend_fig) # fig size in inches
     gm_plots.create_grandmaster_trend_plot(self.gm_glicko_trend_canvas.figure.subplots(), dfs)
 
@@ -219,7 +219,7 @@ def add_gm_widgets(self, dfs):
     gm_control_layout = QHBoxLayout()
     label = QLabel("Selected GM:")
     label.setStyleSheet("""
-        font-size: 15px;
+        font-size: 25px;
         font-weight: bold;
         color: #bdc4b4;
     """)
@@ -232,7 +232,7 @@ def add_gm_widgets(self, dfs):
             padding: 10px;
             margin: 5px;
             max-width: 200px; /* Prevent stretching */
-            font-size: 15px;
+            font-size: 25px;
         }
     """)
     gm_control_layout.addWidget(self.gm_control_box)
@@ -269,9 +269,9 @@ def add_titled_tuesday_widgets(self, dfs):
     '''
 
     # Title
-    label = QLabel("Titled Tuesday (Jul2022-Dec2023)")
+    label = QLabel("Titled Tuesday (7/2022-12/2023)")
     label.setStyleSheet("""
-        font-size: 30px;
+        font-size: 40px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 40px;
@@ -286,7 +286,7 @@ def add_titled_tuesday_widgets(self, dfs):
 
     label = QLabel("Best Players")
     label.setStyleSheet("""
-        font-size: 25px;
+        font-size: 30px;
         font-weight: bold;
         color: #ebecd0;
         padding-top: 20px;
@@ -309,7 +309,7 @@ def add_titled_tuesday_widgets(self, dfs):
 
     label = QLabel("Top 5 Player Glicko Trends")
     label.setStyleSheet("""
-        font-size: 25px;
+        font-size: 30px;
         font-weight: bold;
         color: #ebecd0;
         padding-top: 100px;
@@ -319,7 +319,7 @@ def add_titled_tuesday_widgets(self, dfs):
     tt_trends_vbox.addWidget(label)
 
     self.tt_trends_fig = Figure()
-    self.tt_trends_fig.subplots_adjust(bottom=0.3)
+    self.tt_trends_fig.subplots_adjust(bottom=0.2)
     self.tt_trends_canvas = FigureCanvas(self.tt_trends_fig) # fig size in inches
     titled_tuesday_plots.create_titled_tuesday_trend_plot(self.tt_trends_canvas.figure.subplots(), dfs)
     tt_trends_vbox.addWidget(self.tt_trends_canvas)

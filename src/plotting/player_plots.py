@@ -41,7 +41,7 @@ def create_player_accuracy_trend_plot(ax, dfs, year_min, year_max, time_control=
     y = result['white_elo']  # Y-axis values
 
     # Create the plot
-    ax.plot(x, y, marker='o', linestyle='-', label='Median Elo')
+    ax.scatter(x, y, marker='o', linestyle='-', label='Median Elo')
 
     # Customize the plot
 
@@ -49,7 +49,6 @@ def create_player_accuracy_trend_plot(ax, dfs, year_min, year_max, time_control=
     ticks = range(0, len(result), 12)  # Show a tick every 12 months (1 year)
     ax.set_xticks(ticks)
     ax.set_xticklabels(result['year'].iloc[ticks], rotation=45, ha='right', fontsize=10)  # Show only the year as labels
-    ax.grid(True, linestyle='--', alpha=0.6)
     ax.legend()
 
 def create_player_elo_odds_plot(ax, dfs, year_min, year_max):
@@ -104,8 +103,46 @@ def create_player_elo_odds_plot(ax, dfs, year_min, year_max):
     result_df = dd.read_csv(output_csv).compute()
     x = result_df['ELO Range']
     y = result_df['Win Percentage vs Lower']
-    ax.plot(x, y, marker='o', linestyle='-')
+    line, = ax.plot(x, y, marker='o', linestyle='-')
     ax.set_xticklabels(x, rotation=45, ha='right', fontsize=10)
     ax.set_ylim([0, 100])
     ax.set_xlabel('Elo range')
     ax.set_ylabel('Win chance (%)')
+
+    annot = ax.annotate("", xy=(0,0), xytext=(0,-25),
+                        textcoords="offset points",
+                        va="top", ha="center",
+                        bbox=dict(
+                            boxstyle="round", 
+                            fc='white',
+                            ec='black',
+                            alpha=1.0,
+                            pad=0.5
+                        ),
+                        arrowprops=dict(arrowstyle="->"))
+    annot.set_visible(False)
+    
+    def update_annot(ind):
+        x, y = line.get_data()
+        annot.xy = (x[ind["ind"][0]], y[ind["ind"][0]])
+        text = f"Win chance: {y[ind['ind'][0]]:.2f}%"
+        annot.set_text(text)
+        
+        annot.xytext = (0, -25)
+        annot.set_va("top")
+        annot.set_ha("center")
+
+    def hover(event):
+        vis = annot.get_visible()
+        if event.inaxes == ax:
+            cont, ind = line.contains(event)
+            if cont:
+                update_annot(ind)
+                annot.set_visible(True)
+                ax.figure.canvas.draw_idle()
+            else:
+                if vis:
+                    annot.set_visible(False)
+                    ax.figure.canvas.draw_idle()
+
+    ax.figure.canvas.mpl_connect("motion_notify_event", hover)
