@@ -39,8 +39,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.layout = QtWidgets.QGridLayout(self.main_widget)
         self.setStyleSheet("background-color: #2c2b29")
 
-        self.layout.setHorizontalSpacing(100)  # Set space between columns 
-        self.layout.setContentsMargins(20, 10, 20, 10)  # Left, Top, Right, Bottom (adjust as needed)
+        self.layout.setHorizontalSpacing(100) 
+        self.layout.setContentsMargins(20, 10, 20, 10)
 
         self.layout.setColumnStretch(0, 2)  # Column 0 gets 1 part of the space
         self.layout.setColumnStretch(1, 3)

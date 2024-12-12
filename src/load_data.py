@@ -14,9 +14,6 @@ def load(dfs):
             "hf://datasets/kirillgoltsman/titled-tuesday-chess-games/titled-tuesday.csv",
             dtype={"tournament": "string"}
         ),
-        #"2-million-user-games": dd.read_parquet(
-        #    "data\\2-million-games.parquet"
-        #),
         #"2-million-user-games": dd.read_csv(
         #    "data\\user-games.csv",
         #    sep=';',

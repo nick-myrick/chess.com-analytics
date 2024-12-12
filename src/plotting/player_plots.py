@@ -37,8 +37,8 @@ def create_player_accuracy_trend_plot(ax, dfs, year_min, year_max, time_control=
     result = result[(result['year'] >= year_min) & (result['year'] <= year_max)]
 
     result['year_month'] = result['year'].astype(str) + "-" + result['month'].astype(str)  # Combine year and month
-    x = result['year_month']  # X-axis values
-    y = result['white_elo']  # Y-axis values
+    x = result['year_month'] 
+    y = result['white_elo'] 
 
     # Create the plot
     ax.scatter(x, y, marker='o', linestyle='-', label='Median Elo')
