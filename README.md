@@ -1,6 +1,10 @@
 # Chess.com Analytics
 Player, GM, and Titled Tuesday analytics from chess.com
-![image](https://github.com/user-attachments/assets/5ffa7dd1-af7e-47b9-934b-943254e1cfea)
+![image](https://github.com/user-attachments/assets/3ae7fcfa-6575-4a7a-8fbc-baba957ff1d0)
 
-Dependencies:
+
+## How to run:
+  1) Install Dependencies:
 ```pip install dask matplotlib pyqt6 huggingface_hub```
+  2) Clone repository
+  3) run ```python src/main.py``` from parent folder
