@@ -1,2 +1,0 @@
-2024-12-12 00:59:55,867 - INFO - No checkpoint found, starting from scratch
-2024-12-12 01:45:52,805 - INFO - Data saved to titled_tuesday_data.csv, 0 rows written
