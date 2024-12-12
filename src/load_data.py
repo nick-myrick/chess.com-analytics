@@ -38,7 +38,7 @@ def load(
     return dfs
 
 def pre_processing(
-        dfs: dict[str, dd.DataFrame]) -> dict[str, dd.DastaFrame]:
+        dfs: dict[str, dd.DataFrame]) -> dict[str, dd.DataFrame]:
     '''
     Info:
     Performs necessary preprocessing to the datasets
@@ -54,5 +54,6 @@ def pre_processing(
 
     #dfs[constants.USRGAMES].dropna(subset=['white', 'end_date', 'white_elo'])
     #dfs[constants.USRGAMES].loc[(dfs[constants.USRGAMES]!=0).any(axis=1)]
+    #tt_winners = 
 
     return dfs
