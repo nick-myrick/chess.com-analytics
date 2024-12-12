@@ -1,6 +1,11 @@
 # Chess.com Analytics
 Player, GM, and Titled Tuesday analytics from chess.com
 ![image](https://github.com/user-attachments/assets/3ae7fcfa-6575-4a7a-8fbc-baba957ff1d0)
+## Features
+Three main analytics: General Player, Grandmaster, and Titled Tuesday
+Interactability: 
+1) Hover on any of the line nodes of a graph to see more detailed information!
+2) Click on a player in the Titled Tuesday player ranking to automatically load their personal data in the Grandmaster Statistics panel!
 
 
 ## How to run:
