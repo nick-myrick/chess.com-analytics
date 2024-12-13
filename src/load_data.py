@@ -25,7 +25,7 @@ def load(
         #    dtype={"tournament": "string", "username": "string", "accuracy": "float64", "round": "int64", "rank": "int64", "rating": "int64"}
         #),
         "titled-tuesday": dd.read_csv(
-            "processed-data/data-collection-tt/tt_games.csv",
+            "data/tt-data-collection/tt_games.csv",
             dtype={"tournament": "string", "username": "string", "accuracy": "float64", "round": "int64", "rank": "int64", "rating": "int64"}
         )
         #"2-million-user-games": dd.read_csv(

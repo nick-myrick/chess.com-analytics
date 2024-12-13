@@ -31,7 +31,7 @@ def create_player_accuracy_trend_plot(
     Returns:
     - None
     '''
-    filepath = f"{constants.PROCESSED_DATA_PATH}\\player-accu-{constants.TIME_CONTROLS_MAP[time_control]}"
+    filepath = f"{constants.PROCESSED_DATA_PATH}\\player_data\\player-accu-{constants.TIME_CONTROLS_MAP[time_control]}"
     if not Path(filepath).is_file():
         # Get dataframe and filter by year range
         df = dfs[constants.USRGAMES]
@@ -89,7 +89,7 @@ def create_player_elo_odds_plot(
     Returns:
     - None
     '''
-    output_csv = f"{constants.PROCESSED_DATA_PATH}\\elo_win_percentages.csv"
+    output_csv = f"{constants.PROCESSED_DATA_PATH}\\player_data\\elo_win_percentages.csv"
 
     if not Path(output_csv).is_file():
         # Define ELO ranges in 100-point increments
@@ -141,6 +141,7 @@ def create_player_elo_odds_plot(
     x = result_df['ELO Range']
     y = result_df['Win Percentage vs Lower']
     line, = ax.plot(x, y, marker='o', linestyle='-')
+    ax.set_xticks(x)
     ax.set_xticklabels(x, rotation=45, ha='right', fontsize=10)
     ax.set_ylim([0, 100])
     ax.set_xlabel('Elo range')

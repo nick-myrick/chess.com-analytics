@@ -3,7 +3,7 @@ Common constants that are used between files
 '''
 
 # Paths
-PROCESSED_DATA_PATH = "processed-data"
+PROCESSED_DATA_PATH = "data"
 
 # Dataframe simplification
 TT = "titled-tuesday"

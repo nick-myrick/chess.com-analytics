@@ -271,7 +271,6 @@ def add_gm_widgets(
     self.gm_tt_accu_fig.subplots_adjust(top=0.95)
     self.gm_tt_accu_fig.subplots_adjust(bottom=0.2)
     self.gm_tt_accu_canvas = FigureCanvas(self.gm_tt_accu_fig) # fig size in inches
-    gm_plots.create_grandmaster_tt_accu_plot(self.gm_tt_accu_canvas.figure.subplots(), dfs)
 
     tt_vbox.addWidget(self.gm_tt_accu_canvas)
     tt_vbox.addWidget(label)
@@ -293,7 +292,7 @@ def add_gm_widgets(
     self.gm_glicko_trend_fig.subplots_adjust(top=0.95)
     self.gm_glicko_trend_fig.subplots_adjust(bottom=0.2)
     self.gm_glicko_trend_canvas = FigureCanvas(self.gm_glicko_trend_fig) # fig size in inches
-    gm_plots.create_grandmaster_trend_plot(self.gm_glicko_trend_canvas.figure.subplots(), dfs)
+    gm_plots.create_grandmaster_plots(self.gm_tt_accu_canvas.figure.subplots(), self.gm_glicko_trend_canvas.figure.subplots(), dfs)
 
     gt_vbox.addWidget(self.gm_glicko_trend_canvas)
     gt_vbox.addWidget(label)
@@ -369,14 +368,15 @@ def update_grandmaster_plots(
     
     # Refresh the accuracy plot
     self.gm_tt_accu_fig.clear()
-    ax = self.gm_tt_accu_canvas.figure.subplots()
-    gm_plots.create_grandmaster_tt_accu_plot(ax, dfs, self.gm)
-    self.gm_tt_accu_canvas.draw()
+    accu_ax = self.gm_tt_accu_canvas.figure.subplots()
 
     # Refresh the glicko plot
     self.gm_glicko_trend_fig.clear()
-    ax = self.gm_glicko_trend_canvas.figure.subplots()
-    gm_plots.create_grandmaster_trend_plot(ax, dfs, self.gm)
+    glicko_ax = self.gm_glicko_trend_canvas.figure.subplots()
+
+    gm_plots.create_grandmaster_plots(accu_ax, glicko_ax, dfs, self.gm)
+
+    self.gm_tt_accu_canvas.draw()
     self.gm_glicko_trend_canvas.draw()
 
     self.gm_control_box.setCurrentIndex(gm_index)
