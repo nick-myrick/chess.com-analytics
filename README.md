@@ -1,6 +1,7 @@
 # Chess.com Analytics
 Player, GM, and Titled Tuesday analytics from chess.com
-![image](https://github.com/user-attachments/assets/f993854d-c202-421b-abaa-428241cc1af5)
+![image](https://github.com/user-attachments/assets/0b9bdc2c-4758-4359-9989-50cfd2ced3eb)
+
 
 ## Features
 Three main analytics: General Player, Grandmaster, and Titled Tuesday
