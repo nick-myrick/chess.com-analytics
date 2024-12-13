@@ -1,0 +1,126 @@
+{
+    "username": "yeritsyaan",
+    "games": [
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 88.5,
+            "rating": 2586,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 1,
+            "points": 1.0,
+            "rank": 1,
+            "possible_rank": 1
+        },
+        {
+            "white": false,
+            "score": 0.0,
+            "accuracy": 74,
+            "rating": 2584,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 2,
+            "points": 1.0,
+            "rank": 3,
+            "possible_rank": 3
+        },
+        {
+            "white": true,
+            "score": 0.5,
+            "accuracy": 79.7,
+            "rating": 2581,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 3,
+            "points": 1.5,
+            "rank": 4,
+            "possible_rank": 4
+        },
+        {
+            "white": false,
+            "score": 1.0,
+            "accuracy": 86.3,
+            "rating": 2585,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 4,
+            "points": 2.5,
+            "rank": 4,
+            "possible_rank": 4
+        },
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 83.3,
+            "rating": 2598,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 5,
+            "points": 3.5,
+            "rank": 4,
+            "possible_rank": 4
+        },
+        {
+            "white": false,
+            "score": 1.0,
+            "accuracy": 87.2,
+            "rating": 2610,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 6,
+            "points": 4.5,
+            "rank": 4,
+            "possible_rank": 4
+        },
+        {
+            "white": false,
+            "score": 0.5,
+            "accuracy": 96.1,
+            "rating": 2614,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 7,
+            "points": 5.0,
+            "rank": 5,
+            "possible_rank": 5
+        },
+        {
+            "white": true,
+            "score": 0.5,
+            "accuracy": 89.6,
+            "rating": 2618,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 8,
+            "points": 5.5,
+            "rank": 5,
+            "possible_rank": 5
+        },
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 87.8,
+            "rating": 2630,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 9,
+            "points": 6.5,
+            "rank": 5,
+            "possible_rank": 5
+        },
+        {
+            "white": false,
+            "score": 1.0,
+            "accuracy": 89.4,
+            "rating": 2643,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 10,
+            "points": 7.5,
+            "rank": 4,
+            "possible_rank": 4
+        },
+        {
+            "white": false,
+            "score": 1.0,
+            "accuracy": 83.5,
+            "rating": 2656,
+            "tournament": "early-titled-tuesday-blitz-march-05-2024-4605129",
+            "round": 11,
+            "points": 8.5,
+            "rank": 4,
+            "possible_rank": 4
+        }
+    ]
+}

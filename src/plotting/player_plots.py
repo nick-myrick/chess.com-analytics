@@ -162,7 +162,7 @@ def create_player_elo_odds_plot(
     def update_annot(ind):
         x, y = line.get_data()
         annot.xy = (x[ind["ind"][0]], y[ind["ind"][0]])
-        text = f"Win chance: {y[ind['ind'][0]]:.2f}%"
+        text = f"Your Glicko Range: [{x[ind["ind"][0]]}]\n\nEstimated win chance vs. Glicko 100 points lower:\n{y[ind['ind'][0]]:.2f}%"
         annot.set_text(text)
         
         annot.xytext = (0, -25)

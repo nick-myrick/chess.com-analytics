@@ -52,7 +52,7 @@ def add_player_widgets(
     # Title
     label = QLabel("General Player Statistics")
     label.setStyleSheet("""
-        font-size: 45px;
+        font-size: 55px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 20px;
@@ -241,9 +241,9 @@ def add_gm_widgets(
     '''
 
     # Title
-    label = QLabel("Titled Tuesday (2024)")
+    label = QLabel("Titled Tuesday\n(2024 Late & Early)")
     label.setStyleSheet("""
-        font-size: 45px;
+        font-size: 55px;
         font-weight: bold;
         color: #81b64c;
         padding-top: 20px;
@@ -253,7 +253,7 @@ def add_gm_widgets(
     self.layout.addWidget(label, 1, 1, 1, 2)
 
     # Add graphs for titled tuesday and glicko trend 
-    gm_graph_layout = QHBoxLayout() 
+    gm_graph_hbox = QHBoxLayout() 
 
     # (Left) Title tuesday accuracy
     tt_vbox = QVBoxLayout()
@@ -268,14 +268,15 @@ def add_gm_widgets(
 
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
     self.gm_tt_accu_fig = Figure()
+    self.gm_tt_accu_fig.subplots_adjust(top=0.95)
     self.gm_tt_accu_fig.subplots_adjust(bottom=0.2)
     self.gm_tt_accu_canvas = FigureCanvas(self.gm_tt_accu_fig) # fig size in inches
     gm_plots.create_grandmaster_tt_accu_plot(self.gm_tt_accu_canvas.figure.subplots(), dfs)
 
     tt_vbox.addWidget(self.gm_tt_accu_canvas)
     tt_vbox.addWidget(label)
-    gm_graph_layout.addLayout(tt_vbox)
-    gm_graph_layout.addSpacing(30)
+    gm_graph_hbox.addLayout(tt_vbox)
+    gm_graph_hbox.addSpacing(30)
 
     # (Right) Glicko Trend
     gt_vbox = QVBoxLayout()
@@ -289,17 +290,19 @@ def add_gm_widgets(
     """)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter) 
     self.gm_glicko_trend_fig = Figure()
+    self.gm_glicko_trend_fig.subplots_adjust(top=0.95)
     self.gm_glicko_trend_fig.subplots_adjust(bottom=0.2)
     self.gm_glicko_trend_canvas = FigureCanvas(self.gm_glicko_trend_fig) # fig size in inches
     gm_plots.create_grandmaster_trend_plot(self.gm_glicko_trend_canvas.figure.subplots(), dfs)
 
     gt_vbox.addWidget(self.gm_glicko_trend_canvas)
     gt_vbox.addWidget(label)
-    gm_graph_layout.addLayout(gt_vbox)
+    gm_graph_hbox.addLayout(gt_vbox)
 
-    self.layout.addLayout(gm_graph_layout, 2, 1, 2, 2)
+    self.layout.addLayout(gm_graph_hbox, 2, 1, 2, 2)
     
     # (Bottom) 
+    self.tt_usernames = dfs[constants.TT]['username'].drop_duplicates().compute().tolist()
     tt_winners = dfs[constants.TT_W]
     tt_winner_counts = tt_winners['username'].value_counts() # value_counts gives descending order
     tt_winner_counts_dict=  dict(sorted(zip(tt_winner_counts.compute().index, tt_winner_counts.compute().values),  key=lambda item: item[1], reverse=True))
@@ -315,19 +318,19 @@ def add_gm_widgets(
     gm_control_layout.addWidget(label)
 
     self.gm_control_box = QComboBox(self.main_widget)
-    self.gm_control_box.addItems(self.tt_winners)
+    self.gm_control_box.addItems(self.tt_usernames)
     self.gm_control_box.setStyleSheet("""
         QComboBox {
             padding: 10px;
             margin: 5px;
-            max-width: 200px; /* Prevent stretching */
+            max-width: 300px; /* Prevent stretching */
             font-size: 25px;
+            color: #81b64c
         }
     """)
     gm_control_layout.addWidget(self.gm_control_box)
-    self.gm_control_box.currentIndexChanged.connect(lambda x: update_grandmaster_plots(self, x, dfs))
-    self.gm_control_box.setCurrentIndex(self.tt_winners.index(self.gm))
-
+    self.gm_control_box.currentIndexChanged.connect(lambda x: update_grandmaster_plots(self, x, dfs, call='box'))
+    self.gm_control_box.setCurrentIndex(self.tt_usernames.index(self.gm))
 
     gm_control_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -341,7 +344,8 @@ def add_gm_widgets(
 def update_grandmaster_plots(
         self: Self,
         gm_index: int,
-        dfs: dict[str, dd.DataFrame]) -> None:
+        dfs: dict[str, dd.DataFrame],
+        call: str) -> None:
     '''
     Info:
     Updates grandmaster plots when the gm selection is changed to a different user
@@ -350,19 +354,29 @@ def update_grandmaster_plots(
     - self (Self): The instance of the QMainWindow so we can directly access the needed plots
     - gm_index: The index lookup for our GM name array, so we can select the chosen GM
     - dfs (dict[str, dd.DataFrame]): The dictionary of dask dataframes which contains our player data
+    - call (str): Can either be 'list' or 'box', where:
+        1) 'list' means the index was selected from the PlayerRankWidget list, which is tied to the tt_winners username list.
+        2) 'box'  means the index was selected from the QComboBox list, which is tied to the tt_usernames username list.
 
     Returns:
     - None
     '''
-    gm_name = self.tt_winners[gm_index]
+    if call == 'list':
+        self.gm = self.tt_winners[gm_index]
+        gm_index = self.tt_usernames.index(self.gm)
+    elif call == 'box':
+        self.gm = self.tt_usernames[gm_index]
+    
+    # Refresh the accuracy plot
     self.gm_tt_accu_fig.clear()
     ax = self.gm_tt_accu_canvas.figure.subplots()
-    gm_plots.create_grandmaster_tt_accu_plot(ax, dfs, gm_name)
+    gm_plots.create_grandmaster_tt_accu_plot(ax, dfs, self.gm)
     self.gm_tt_accu_canvas.draw()
 
+    # Refresh the glicko plot
     self.gm_glicko_trend_fig.clear()
     ax = self.gm_glicko_trend_canvas.figure.subplots()
-    gm_plots.create_grandmaster_trend_plot(ax, dfs, gm_name)
+    gm_plots.create_grandmaster_trend_plot(ax, dfs, self.gm)
     self.gm_glicko_trend_canvas.draw()
 
     self.gm_control_box.setCurrentIndex(gm_index)
@@ -384,46 +398,48 @@ def add_titled_tuesday_widgets(
     - None
     '''
 
-    # Title
-    label = QLabel("Overall Titled Tuesday Stats")
-    label.setStyleSheet("""
-        font-size: 45px;
-        font-weight: bold;
-        color: #81b64c;
-        padding-top: 40px;
-        padding-bottom: 20px;
-    """)
-    label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    self.layout.addWidget(label, 5, 1, 1, 2)
-
+    # MAIN HBOX (contains left player list and right plots, along with their titles)
     tt_layout = QHBoxLayout()
 
-    # (Left) Top TT Players interactive feature: Click on name to switch gm widgets to focus on that player.
-    tt_top_vbox = QVBoxLayout()
+    ##########################
+    # (LEFT VBOX) Top TT Players interactive feature: Click on name to switch gm widgets to focus on that player.
+    ##########################
 
+    list_vbox = QVBoxLayout()
+
+    # Label
     label = QLabel("Player Rankings (by # of wins)")
     label.setStyleSheet("""
         font-size: 30px;
         font-weight: bold;
         color: #ebecd0;
-        padding-top: 20px;
+        padding-top: 100px;
         padding-bottom: 20px;
     """)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    tt_top_vbox.addWidget(label)
 
+    # Player list
     tt_winners = dfs[constants.TT_W]
     tt_winner_counts = tt_winners['username'].value_counts() # value_counts gives descending order
     tt_winner_counts_dict=  dict(sorted(zip(tt_winner_counts.compute().index, tt_winner_counts.compute().values),  key=lambda item: item[1], reverse=True))
     tt_winners = [(rank + 1, name, win_count) for rank, (name, win_count) in enumerate(tt_winner_counts_dict.items()) ]
-
     player_list = PlayerRankWidget(tt_winners)
-    tt_top_vbox.addWidget(player_list)
-    tt_layout.addLayout(tt_top_vbox)
+    player_list.player_selected.connect(lambda x: update_grandmaster_plots(self, x, dfs, call='list'))
 
-    # (Right) # Player accuracy to otb accuracy and glicko score charts of the top players
-    tt_trends_vbox = QVBoxLayout() 
+    # Add the widgets
+    list_vbox.addWidget(label)
+    list_vbox.addWidget(player_list)
 
+    tt_layout.addLayout(list_vbox)
+    tt_layout.setAlignment(tt_layout, Qt.AlignmentFlag.AlignVCenter)
+
+    ##########################
+    # (RIGHT VBOX) # Player accuracy to otb accuracy and glicko score charts of the top players
+    ##########################
+
+    plots_vbox = QVBoxLayout() 
+
+    # Title
     label = QLabel("Top 5 Player Trends")
     label.setStyleSheet("""
         font-size: 30px;
@@ -433,31 +449,31 @@ def add_titled_tuesday_widgets(
         padding-bottom: 20px;
     """)
     label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    tt_trends_vbox.addWidget(label)
+    plots_vbox.addWidget(label)
 
+    # Glicko plot
     self.tt_trends_fig = Figure()
     self.tt_trends_fig.subplots_adjust(top=0.8)
     self.tt_trends_fig.subplots_adjust(bottom=0.2)
     self.tt_trends_canvas = FigureCanvas(self.tt_trends_fig) # fig size in inches
 
+    # Accuracy plot
     self.tt_trends_accu_fig = Figure()
     self.tt_trends_accu_fig.subplots_adjust(bottom=0.2)
     self.tt_trends_accu_canvas = FigureCanvas(self.tt_trends_accu_fig) # fig size in inches
 
+    # Initiate the plots
     titled_tuesday_plots.create_titled_tuesday_trend_plots(
         self.tt_trends_canvas.figure.subplots(),
         self.tt_trends_accu_canvas.figure.subplots(),
         dfs
     )
-    tt_trends_vbox.addWidget(self.tt_trends_canvas)
-    tt_trends_vbox.addWidget(self.tt_trends_accu_canvas)
 
-    tt_layout.addLayout(tt_trends_vbox)
-    player_list.player_selected.connect(lambda x: update_grandmaster_plots(self, x, dfs))
+    # Add the plots to the vbox
+    plots_vbox.addWidget(self.tt_trends_canvas)
+    plots_vbox.addWidget(self.tt_trends_accu_canvas)
 
+    tt_layout.addLayout(plots_vbox)
 
-    self.layout.addLayout(tt_layout, 6, 1, 2, 2)
-    tt_layout.setStretch(0, 1)
-    tt_layout.setStretch(1, 1)
-
-    self.tt_trends_canvas.draw()
+    self.layout.addLayout(tt_layout, 5, 1, 2, 2)
+    self.layout.setAlignment(tt_layout, Qt.AlignmentFlag.AlignTop)

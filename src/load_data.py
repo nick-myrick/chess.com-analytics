@@ -81,7 +81,7 @@ def pre_processing(
 
     # Add date information
     df = dfs[constants.TT]
-    tt_winners = df.loc[(df["rank"] == 1) & (df["round"] == 11)].drop_duplicates(subset=["date"]) # include all winners, drop games that are on the same day
+    tt_winners = df.loc[(df["rank"] == 1) & (df["round"] == 11)].drop_duplicates(subset=['date', 'username']) # include all winners, drop games that are on the same day with the same name
     dfs[constants.TT_W] = tt_winners
 
     return dfs

@@ -1,0 +1,126 @@
+{
+    "username": "gabuzyan_chessmood",
+    "games": [
+        {
+            "white": false,
+            "score": 1.0,
+            "accuracy": 86.5,
+            "rating": 2899,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 1,
+            "points": 1.0,
+            "rank": 1,
+            "possible_rank": 1
+        },
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 97.3,
+            "rating": 2901,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 2,
+            "points": 2.0,
+            "rank": 1,
+            "possible_rank": 1
+        },
+        {
+            "white": false,
+            "score": 0.5,
+            "accuracy": 92.5,
+            "rating": 2896,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 3,
+            "points": 2.5,
+            "rank": 2,
+            "possible_rank": 2
+        },
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 97.3,
+            "rating": 2899,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 4,
+            "points": 3.5,
+            "rank": 2,
+            "possible_rank": 2
+        },
+        {
+            "white": false,
+            "score": 0.5,
+            "accuracy": 96.1,
+            "rating": 2896,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 5,
+            "points": 4.0,
+            "rank": 3,
+            "possible_rank": 3
+        },
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 94.9,
+            "rating": 2900,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 6,
+            "points": 5.0,
+            "rank": 3,
+            "possible_rank": 3
+        },
+        {
+            "white": false,
+            "score": 0.5,
+            "accuracy": 97,
+            "rating": 2904,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 7,
+            "points": 5.5,
+            "rank": 4,
+            "possible_rank": 4
+        },
+        {
+            "white": true,
+            "score": 0.0,
+            "accuracy": 83,
+            "rating": 2900,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 8,
+            "points": 5.5,
+            "rank": 5,
+            "possible_rank": 5
+        },
+        {
+            "white": false,
+            "score": 1.0,
+            "accuracy": 89.7,
+            "rating": 2903,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 9,
+            "points": 6.5,
+            "rank": 5,
+            "possible_rank": 5
+        },
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 87.6,
+            "rating": 2907,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 10,
+            "points": 7.5,
+            "rank": 4,
+            "possible_rank": 4
+        },
+        {
+            "white": true,
+            "score": 1.0,
+            "accuracy": 91.8,
+            "rating": 2918,
+            "tournament": "late-titled-tuesday-blitz-december-26-2023-4474114",
+            "round": 11,
+            "points": 8.5,
+            "rank": 4,
+            "possible_rank": 4
+        }
+    ]
+}

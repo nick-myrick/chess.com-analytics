@@ -47,15 +47,19 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.main_widget = QtWidgets.QWidget()
         self.setCentralWidget(self.main_widget)
         self.layout = QtWidgets.QGridLayout(self.main_widget)
-        self.setStyleSheet("background-color: #2c2b29")
+        #self.setStyleSheet("background-color: #2c2b29")
+        self.setStyleSheet("background-color: #000000")
 
-        self.layout.setHorizontalSpacing(100) 
+        #self.layout.setHorizontalSpacing(100) 
         self.layout.setContentsMargins(20, 10, 20, 10)
+
+        self.layout.setHorizontalSpacing(10)        # Horizontal spacing between columns
+        #self.layout.setVerticalSpacing(5) 
 
         self.layout.setColumnStretch(0, 2)  # Column 0 gets 1 part of the space
         self.layout.setColumnStretch(1, 3)
 
-        self.setWindowTitle("Chess.com Statistics")
+        self.setWindowTitle("Chess.com Analytics")
         label = QLabel("Chess.com Statistics")
         label.setStyleSheet("""
             font-size: 70px;

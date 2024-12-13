@@ -67,7 +67,6 @@ def create_titled_tuesday_trend_plots(
         handletextpad=0.4, columnspacing=0.1
     )
     ax2.set_title('Average Accuracy of TT Winners Over Time')
-    ax2.set_xlabel('Date')
     ax2.set_ylabel('Average Accuracy')
 
     # Add annotations on hover

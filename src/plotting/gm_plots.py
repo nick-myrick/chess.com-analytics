@@ -38,8 +38,7 @@ def create_grandmaster_tt_accu_plot(
     mean_values = df.groupby('date')['accuracy'].mean().reset_index()
     ax.plot(mean_values['date'].compute(), mean_values['accuracy'].compute(), color='red', linewidth=2, label='Mean Accuracy')
     
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Accuracy (%)")
+    ax.set_ylabel("(%)")
     ax.legend(loc='upper left')
     ax.tick_params(axis='x', labelrotation=45, labelsize=10)
     ax.grid(True, linestyle='--', alpha=0.6)
@@ -73,8 +72,6 @@ def create_grandmaster_trend_plot(
     mean_values = df.groupby('date')['rating'].mean().reset_index()
     ax.plot(mean_values['date'].compute(), mean_values['rating'].compute(), color='red', linewidth=2, label='Mean Rating')
     
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Accuracy (%)")
     ax.legend(loc='upper left')
     ax.tick_params(axis='x', labelrotation=45, labelsize=10)
     ax.grid(True, linestyle='--', alpha=0.6)
