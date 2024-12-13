@@ -241,7 +241,7 @@ def add_gm_widgets(
     '''
 
     # Title
-    label = QLabel("Titled Tuesday\n(2024 Late & Early)")
+    label = QLabel("Titled Tuesday & GM Statistics\n(2024 Late & Early)")
     label.setStyleSheet("""
         font-size: 55px;
         font-weight: bold;

@@ -60,7 +60,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.layout.setColumnStretch(1, 3)
 
         self.setWindowTitle("Chess.com Analytics")
-        label = QLabel("Chess.com Statistics")
+        label = QLabel("Chess.com Analytics")
         label.setStyleSheet("""
             font-size: 70px;
             font-weight: bold;
