@@ -30,21 +30,26 @@ def create_grandmaster_plots(
 
     # Filter by gm username
     df = dfs[constants.TT]
-    df = df[df['username'] == gm_name]
-    df = df[(df['accuracy'].notnull()) & (df['accuracy'] != 0)]
+    df = df[(df['username'] == gm_name) & (df['accuracy'].notnull()) & (df['accuracy'] != 0)]
 
-    x = df['date'].compute()
-    y = df['accuracy'].compute()
-    y2 = df['rating'].compute()
+    selected_columns = ['date', 'accuracy', 'rating']
+    df = df[selected_columns]
+
+    df = df.compute()
+
+    x = df['date']
+    y = df['accuracy']
+    y2 = df['rating']
 
     # Acscuracy plot
     ax.scatter(x, y, s=5)
 
     # Calculate and plot mean accuracy per day
-    mean_values = df.groupby('date')['accuracy'].mean().reset_index()
-    x_line = mean_values['date'].compute()
+    mean_accuracy = df.groupby('date')['accuracy'].mean().reset_index()
 
-    ax.plot(x_line, mean_values['accuracy'].compute(), color='red', linewidth=2, label='Mean Accuracy')
+    x_line = mean_accuracy['date']
+
+    ax.plot(x_line, mean_accuracy['accuracy'], color='red', linewidth=2, label='Mean Accuracy')
     
     ax.set_ylabel("(%)")
     ax.legend(loc='upper left')
@@ -55,8 +60,8 @@ def create_grandmaster_plots(
     ax2.scatter(x, y2, s=5)
 
     # Calculate and plot mean rating per day
-    mean_values = df.groupby('date')['rating'].mean().reset_index()
-    ax2.plot(x_line, mean_values['rating'].compute(), color='red', linewidth=2, label='Mean Rating')
+    mean_rating = df.groupby('date')['rating'].mean().reset_index()
+    ax2.plot(x_line, mean_rating['rating'], color='red', linewidth=2, label='Mean Rating')
     
     ax2.legend(loc='upper left')
     ax2.tick_params(axis='x', labelrotation=45, labelsize=10)
