@@ -1,6 +1,8 @@
 # Chess.com Analytics
 Player, GM, and Titled Tuesday analytics from chess.com
-![image](https://github.com/user-attachments/assets/3ae7fcfa-6575-4a7a-8fbc-baba957ff1d0)
+![image](https://github.com/user-attachments/assets/634a53da-5bb3-428b-ba9f-7bd134e010f2)
+
+
 ## Features
 Three main analytics: General Player, Grandmaster, and Titled Tuesday
 
@@ -19,3 +21,6 @@ Three main analytics: General Player, Grandmaster, and Titled Tuesday
   1) Generating a much larger titled tuesday database for more accurate results
   2) Tidying up the UI interface
   3) Adding new interactivity features to the plots
+
+## Download the titled tuesday dataset here!:
+https://www.kaggle.com/datasets/nukemnick/chess-com-2024titled-tuesday-dataset
