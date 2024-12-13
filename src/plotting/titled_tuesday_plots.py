@@ -27,9 +27,9 @@ def create_titled_tuesday_trend_plots(
     
     tt_winners = dfs[constants.TT_W]
     tt_winner_counts = tt_winners['username'].value_counts() # value_counts gives descending order
-    tt_winner_counts_dict=  dict(sorted(zip(tt_winner_counts.compute().index, tt_winner_counts.compute().values),  key=lambda item: item[1], reverse=True))
+    tt_winner_counts_dict = dict(sorted(zip(tt_winner_counts.compute().index, tt_winner_counts.compute().values),  key=lambda item: item[1], reverse=True))
     tt_winners = [(rank + 1, name, win_count) for rank, (name, win_count) in enumerate(tt_winner_counts_dict.items()) ]
-    df = dfs[constants.TT]
+
     ax.tick_params(rotation=45, labelsize=10)
 
     full_date_range = pd.date_range(start='2024-01-01', end='2024-12-31', freq='MS')
@@ -38,25 +38,19 @@ def create_titled_tuesday_trend_plots(
     lines_ax2 = []
 
     for i, (rank, gm_name, win_count) in enumerate(tt_winners[0:5]):
-        df_new = df[df['username'] == gm_name]
-
-        df_new = df_new[(df_new['rating'].notnull()) & (df_new['rating'] != 0)]
-
-        # Group by year and month and calculate the mean rating
-        df_new['year_month'] = df_new['date'].dt.to_period('M')
+        df = dfs[constants.TT]
+        df = df[df['username'] == gm_name]
+        df = df[(df['rating'].notnull()) & (df['rating'] != 0)]
 
         # Calculate mean ratings per month
-        mean_values = df_new.groupby('year_month')['rating'].mean().compute()
-        mean_accuracy = df_new.groupby('year_month')['accuracy'].mean().compute()
+        mean_values = df.groupby('date')['rating'].mean().reset_index()
+        mean_accuracy = df.groupby('date')['accuracy'].mean().reset_index()
 
         # Reindex to include all months in the full date range
-        mean_values = mean_values.reindex(pd.period_range(start='2024-01', end='2024-12', freq='M'))
-        mean_accuracy = mean_accuracy.reindex(pd.period_range(start='2024-01', end='2024-12', freq='M'))
-        mean_values.interpolate(method='linear', inplace=True)
-        mean_accuracy.interpolate(method='linear', inplace=True)
-
-        line1, = ax.plot(mean_values.index.to_timestamp(), mean_values.values, label=gm_name, marker='.')
-        line2, = ax2.plot(mean_accuracy.index.to_timestamp(), mean_accuracy.values, marker='.')
+        line1, = ax.plot(mean_values['date'].compute(), mean_values['rating'].compute(), label=gm_name, marker='.')
+        #line1, = ax.plot(mean_values.index.to_timestamp(), mean_values.values, label=gm_name, marker='.')
+        #line2, = ax2.plot(mean_accuracy.index.to_timestamp(), mean_accuracy.values, marker='.')
+        line2, = ax2.plot(mean_accuracy['date'].compute(), mean_accuracy['accuracy'].compute(), label=gm_name, marker='.')
         lines_ax1.append((line1, gm_name))
         lines_ax2.append((line2, f"{gm_name} Accuracy"))
 
