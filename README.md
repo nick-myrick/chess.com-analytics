@@ -1,6 +1,7 @@
 # Chess.com Analytics
 Player, GM, and Titled Tuesday analytics from chess.com
-![image](https://github.com/user-attachments/assets/634a53da-5bb3-428b-ba9f-7bd134e010f2)
+![image](https://github.com/user-attachments/assets/072279a2-7d1d-4d96-a80c-79428335e2a3)
+
 
 
 ## Features
